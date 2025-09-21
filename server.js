@@ -23,9 +23,11 @@ app.get('/', (req, res) => {
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
+const ebayRoutes = require('./routes/ebayRoutes');
 
 // Use routes
 app.use('/api/auth', authRoutes);
+app.use('/api/ebay', ebayRoutes);
 
 const PORT = process.env.PORT || 5000;
 
