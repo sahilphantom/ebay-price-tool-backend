@@ -26,7 +26,7 @@ class EbayService {
   async exchangeCodeForToken(code) {
     const clientId = process.env.EBAY_APP_ID;
     const clientSecret = process.env.EBAY_CERT_ID;
-    const redirectUri = process.env.EBAY_REDIRECT_URI || 'http://localhost:3000/api/ebay/callback';
+    const redirectUri = process.env.EBAY_REDIRECT_URI || 'http://localhost:5000/api/ebay/callback';
 
     try {
       const response = await axios.post(
@@ -46,6 +46,9 @@ class EbayService {
 
       return response.data;
     } catch (error) {
+      if (error.response) {
+        throw new Error(`eBay API Error: ${error.response.status} - ${error.response.data.error_description || error.response.statusText}`);
+      }
       throw new Error('Failed to exchange code for token: ' + error.message);
     }
   }
@@ -72,6 +75,9 @@ class EbayService {
 
       return response.data;
     } catch (error) {
+      if (error.response) {
+        throw new Error(`eBay API Error: ${error.response.status} - ${error.response.data.error_description || error.response.statusText}`);
+      }
       throw new Error('Failed to refresh token: ' + error.message);
     }
   }
@@ -91,6 +97,9 @@ class EbayService {
 
       return response.data;
     } catch (error) {
+      if (error.response) {
+        throw new Error(`eBay API Error: ${error.response.status} - ${error.response.data.error_description || error.response.statusText}`);
+      }
       throw new Error('Failed to get user info: ' + error.message);
     }
   }
@@ -110,6 +119,9 @@ class EbayService {
 
       return response.data;
     } catch (error) {
+      if (error.response) {
+        throw new Error(`eBay API Error: ${error.response.status} - ${error.response.data.error_description || error.response.statusText}`);
+      }
       throw new Error('Failed to fetch inventory items: ' + error.message);
     }
   }
@@ -140,6 +152,9 @@ class EbayService {
 
       return response.data;
     } catch (error) {
+      if (error.response) {
+        throw new Error(`eBay API Error: ${error.response.status} - ${error.response.data.error_description || error.response.statusText}`);
+      }
       throw new Error('Failed to update prices: ' + error.message);
     }
   }

@@ -62,6 +62,11 @@ exports.disconnectAccount = async (req, res) => {
   try {
     const { accountId } = req.params;
     
+    // Validate ObjectId format
+    if (!accountId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: 'Invalid account ID format' });
+    }
+    
     const account = await EbayAccount.findByIdAndUpdate(
       accountId,
       { isActive: false },
@@ -81,6 +86,11 @@ exports.disconnectAccount = async (req, res) => {
 exports.refreshToken = async (req, res) => {
   try {
     const { accountId } = req.params;
+    
+    // Validate ObjectId format
+    if (!accountId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: 'Invalid account ID format' });
+    }
     
     const account = await EbayAccount.findById(accountId);
     if (!account) {
@@ -105,6 +115,11 @@ exports.refreshToken = async (req, res) => {
 exports.syncInventory = async (req, res) => {
   try {
     const { accountId } = req.params;
+    
+    // Validate ObjectId format
+    if (!accountId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: 'Invalid account ID format' });
+    }
     
     const account = await EbayAccount.findById(accountId);
     if (!account) {

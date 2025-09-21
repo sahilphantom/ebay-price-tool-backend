@@ -54,13 +54,19 @@ EbayAccountSchema.pre('save', function(next) {
   next();
 });
 
-// Method to encrypt sensitive data
+// Method to encrypt sensitive data (if needed)
 EbayAccountSchema.methods.encryptData = function(data) {
+  if (!process.env.ENCRYPTION_KEY) {
+    throw new Error('ENCRYPTION_KEY not set in environment variables');
+  }
   return crypto.AES.encrypt(data, process.env.ENCRYPTION_KEY).toString();
 };
 
-// Method to decrypt sensitive data
+// Method to decrypt sensitive data (if needed)
 EbayAccountSchema.methods.decryptData = function(encryptedData) {
+  if (!process.env.ENCRYPTION_KEY) {
+    throw new Error('ENCRYPTION_KEY not set in environment variables');
+  }
   const bytes = crypto.AES.decrypt(encryptedData, process.env.ENCRYPTION_KEY);
   return bytes.toString(crypto.enc.Utf8);
 };
