@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto-js');
 
 const EbayAccountSchema = new mongoose.Schema({
   userId: {
@@ -23,6 +22,7 @@ const EbayAccountSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  // Store user's API credentials (not your app's)
   appId: {
     type: String,
     required: true
@@ -53,22 +53,5 @@ EbayAccountSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
 });
-
-// Method to encrypt sensitive data (if needed)
-EbayAccountSchema.methods.encryptData = function(data) {
-  if (!process.env.ENCRYPTION_KEY) {
-    throw new Error('ENCRYPTION_KEY not set in environment variables');
-  }
-  return crypto.AES.encrypt(data, process.env.ENCRYPTION_KEY).toString();
-};
-
-// Method to decrypt sensitive data (if needed)
-EbayAccountSchema.methods.decryptData = function(encryptedData) {
-  if (!process.env.ENCRYPTION_KEY) {
-    throw new Error('ENCRYPTION_KEY not set in environment variables');
-  }
-  const bytes = crypto.AES.decrypt(encryptedData, process.env.ENCRYPTION_KEY);
-  return bytes.toString(crypto.enc.Utf8);
-};
 
 module.exports = mongoose.model('EbayAccount', EbayAccountSchema);

@@ -1,5 +1,4 @@
 const axios = require('axios');
-const crypto = require('crypto-js');
 
 class EbayService {
   constructor() {
@@ -12,9 +11,8 @@ class EbayService {
     return this.isSandbox ? this.sandboxURL : this.baseURL;
   }
 
-  // Generate OAuth URL for eBay
-  generateAuthURL() {
-    const clientId = process.env.EBAY_APP_ID;
+  // Generate OAuth URL for eBay with custom credentials
+  generateAuthURL(clientId = process.env.EBAY_APP_ID) {
     const redirectUri = process.env.EBAY_REDIRECT_URI || 'http://localhost:3000/api/ebay/callback';
     
     const authURL = `https://signin.ebay.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=https://api.ebay.com/oauth/api_scope`;
@@ -22,11 +20,9 @@ class EbayService {
     return authURL;
   }
 
-  // Exchange authorization code for access token
-  async exchangeCodeForToken(code) {
-    const clientId = process.env.EBAY_APP_ID;
-    const clientSecret = process.env.EBAY_CERT_ID;
-    const redirectUri = process.env.EBAY_REDIRECT_URI || 'http://localhost:5000/api/ebay/callback';
+  // Exchange authorization code for access token using specific credentials
+  async exchangeCodeForToken(code, clientId, clientSecret, devId) {
+    const redirectUri = process.env.EBAY_REDIRECT_URI || 'http://localhost:3000/api/ebay/callback';
 
     try {
       const response = await axios.post(
@@ -54,10 +50,7 @@ class EbayService {
   }
 
   // Refresh access token
-  async refreshToken(refreshToken) {
-    const clientId = process.env.EBAY_APP_ID;
-    const clientSecret = process.env.EBAY_CERT_ID;
-
+  async refreshToken(refreshToken, clientId, clientSecret) {
     try {
       const response = await axios.post(
         `${this.getBaseURL()}/identity/v1/oauth2/token`,

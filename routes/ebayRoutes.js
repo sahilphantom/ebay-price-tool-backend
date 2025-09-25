@@ -7,11 +7,13 @@ const {
   getAccounts, 
   disconnectAccount, 
   refreshToken, 
-  syncInventory 
+  syncInventory,
+  validateCredentials
 } = require('../controllers/ebayController');
 
 // Public routes
 router.get('/auth-url', generateAuthURL);
+router.post('/validate-credentials', validateCredentials);
 
 // Authenticated routes
 router.get('/callback', auth, handleCallback);
