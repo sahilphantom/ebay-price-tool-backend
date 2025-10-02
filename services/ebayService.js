@@ -151,6 +151,28 @@ class EbayService {
       throw new Error('Failed to update prices: ' + error.message);
     }
   }
+
+  // Search for competitors using Browse API (simplified version)
+  async searchCompetitors(query, limit = 20) {
+    try {
+      // This would be the actual eBay Browse API call
+      // For now returning mock data to demonstrate structure
+      return {
+        items: [
+          {
+            itemId: '123456789012',
+            title: 'Sample Product Title',
+            price: { value: 29.99, currency: 'USD' },
+            seller: { username: 'sample_seller' },
+            condition: 'New',
+            image: 'https://example.com/image.jpg'
+          }
+        ]
+      };
+    } catch (error) {
+      throw new Error('Failed to search competitors: ' + error.message);
+    }
+  }
 }
 
 module.exports = new EbayService();
